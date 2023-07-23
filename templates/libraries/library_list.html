@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+
+{% block title %}Libraries{% endblock title %}
+
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr scope="row">
+                <th scope="col">Label</th>
+            </tr>
+        </thead>
+    
+    {% for library in library_list %}
+        <tr scope="row">
+            <td><a href="{{ library.get_absolute_url }}">{{ library.label }}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock content %}
