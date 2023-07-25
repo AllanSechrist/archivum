@@ -8,9 +8,10 @@ class LibraryListView(LoginRequiredMixin, ListView):
     model = Library
     context_object_name = "library_list"
     template_name = "libraries/library_list.html"
-
+    login_url = "account_login"
 
 class LibraryDetailView(LoginRequiredMixin, DetailView):
     model = Library
     context_object_name = "library"
     template_name = "libraries/library_detail.html"
+    login_url = "account_login"

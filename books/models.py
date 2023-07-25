@@ -28,6 +28,11 @@ class Book(models.Model):
     level = models.CharField(max_length=1, null=True, blank=True, choices=generate_level_choices())
     library = models.ForeignKey("libraries.Library", on_delete=models.SET_NULL, null=True, related_name="books") # set to null when library is deleted.
 
+    class Meta: # TEST
+        permissions = [
+            ("special_status", "Can read all books"),
+        ]
+
     def __str__(self):
         return self.title
     
