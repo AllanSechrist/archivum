@@ -7,4 +7,26 @@
     <div class="">
         <h2>Library - {{ library.label }}</h2>
     </div>
+
+    <h3>Books</h3>
+    <table class="table">
+        <thead>
+            <tr scope="row">
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Level</th>
+            </tr>
+        </thead>
+        {% for book in books %}
+            <tr scope="row">
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.publisher }}</td>
+                <td>{{ book.level }}</td>
+            </tr>
+        {% empty %}
+        <h3>There are no books in this library</h3>
+        {% endfor %}
+    </table>
 {% endblock content %}

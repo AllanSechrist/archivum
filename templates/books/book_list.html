@@ -23,6 +23,10 @@
             <td>{{ book.level }}</td>
             <td>{{ book.library }}</td>
         </tr>
+    {% empty %}
+        <h2>
+            There are no books
+        </h2>
     {% endfor %}
     </table>
 {% endblock content %}

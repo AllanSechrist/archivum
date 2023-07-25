@@ -15,6 +15,10 @@
         <tr scope="row">
             <td><a href="{{ library.get_absolute_url }}">{{ library.label }}</a></td>
         </tr>
+    {% empty %}
+        <h2>
+            There are no libraries
+        </h2>
     {% endfor %}
     </table>
 {% endblock content %}
