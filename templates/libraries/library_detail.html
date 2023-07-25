@@ -18,7 +18,7 @@
                 <th scope="col">Level</th>
             </tr>
         </thead>
-        {% for book in books %}
+        {% for book in library.books.all %}
             <tr scope="row">
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>

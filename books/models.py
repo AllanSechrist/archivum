@@ -26,7 +26,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=200)
     isbn = models.CharField(max_length=15, null=True, blank=True) # if a book does not have an ISBN leave blank.
     level = models.CharField(max_length=1, null=True, blank=True, choices=generate_level_choices())
-    library = models.ForeignKey("libraries.Library", on_delete=models.SET_NULL, null=True) # set to null when library is deleted.
+    library = models.ForeignKey("libraries.Library", on_delete=models.SET_NULL, null=True, related_name="books") # set to null when library is deleted.
 
     def __str__(self):
         return self.title
