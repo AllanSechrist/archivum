@@ -9,6 +9,7 @@ psycopg2-binary = "*"
 crispy-bootstrap5 = "*"
 django-allauth = "*"
 environs = {extras = ["django"], version = "*"}
+django-debug-toolbar = "*"
 
 [dev-packages]
 
