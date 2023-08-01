@@ -46,26 +46,36 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'library_list' %}">Libraries</a>
             </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'add_book' %}">Add Book</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'add_library' %}">Add Library</a>
+              </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'about' %}">About</a>
             </li>
             {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'account_logout' %}">Log Out</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'account_login' %}">Log In</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
-            </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_logout' %}">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_login' %}">Log In</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+              </li>
             {% endif %}
           </ul>
-          <form class="d-flex" action="{% url 'search_results' %}" method="get">
-            <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          {% if user.is_authenticated %}
+            <form class="d-flex" action="{% url 'search_results' %}" method="get">
+              <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          {% endif %}
         </div>
       </div>
     </nav>
