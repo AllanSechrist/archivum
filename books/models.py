@@ -17,14 +17,16 @@ def generate_level_choices():
     return choices
 
 
+
 class BookMetaData(models.Model):
     """
     Creates meta data for a book. To be linked to physical books.
     In the case that a book doesn't have an ISBN number,
     The user can create a unique "ISBN".
-    It is recommened to use letters or a combinations of
-    letters and numbers inorder to prevent accidently
-    assigning a ISBN that might exsist. 
+    It is recommened to use letters, a combinations of
+    letters and numbers, or create an "ISBN" that
+    is less than 10 characters in length inorder to prevent accidently
+    assigning an ISBN that might exsist. 
     """
     id = models.UUIDField(
         primary_key=True,
@@ -44,11 +46,9 @@ class BookMetaData(models.Model):
 
     def __str__(self):
         return self.title
-    
-    def get_absolute_url(self):
-        return reverse("book_detail", args=[str(self.id)])
-    
-    
+
+
+
 class PhysicalBook(models.Model):
     LEVEL_CHOICES = generate_level_choices()
     library = models.ForeignKey("libraries.Library", on_delete=models.SET_NULL, null=True, blank=True, related_name="books") # set to null when library is deleted.
@@ -59,4 +59,6 @@ class PhysicalBook(models.Model):
     def __str__(self):
         return self.book
     
+    def get_absolute_url(self):
+        return reverse("book_detail", args=[str(self.id)])
     

@@ -1,0 +1,17 @@
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Book{% endblock title %} 
+
+{% block content %}
+  <h1>Add Book</h1>
+  <form method="post">
+    {% if user.libraries.exists %}
+      {% csrf_token %}
+      {% crispy form %}
+    {% else %}
+      <p>Please create at least one library before adding a book.</p>
+      <a href="{% url 'add_library' %}">Create a Library</a>
+    {% endif %}
+  </form>
+{% endblock content %}

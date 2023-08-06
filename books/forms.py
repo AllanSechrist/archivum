@@ -2,7 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from .models import BookMetaData, PhysicalBook
-from libraries.models import Library
+# from libraries.models import Library
 
 
 class BookForm(forms.ModelForm):
@@ -29,23 +29,23 @@ class BookForm(forms.ModelForm):
             ),
             Submit('submit', 'Add Book', css_class="btn btn-primary")
         )
-    library = forms.ModelChoiceField(queryset=Library.objects.all(), required=False)
+    # library = forms.ModelChoiceField(queryset=Library.objects.all(), required=False)
 
-    def save(self, commit=True):
-        book_metadata = super().save(commit=False)
+    # def save(self, commit=True):
+    #     book_metadata = super().save(commit=False)
 
-        if commit:
-            book_metadata.save()
+    #     if commit:
+    #         book_metadata.save()
 
-            library = self.cleaned_data.get('library')
-            if library is not None:
-                physical_book = PhysicalBook(book=book_metadata, library=library)
-                physical_book.save()
-            else:
-                physical_book = PhysicalBook(book=book_metadata)
-                physical_book.save()
+    #         library = self.cleaned_data.get('library')
+    #         if library is not None:
+    #             physical_book = PhysicalBook(book=book_metadata, library=library)
+    #             physical_book.save()
+    #         else:
+    #             physical_book = PhysicalBook(book=book_metadata)
+    #             physical_book.save()
 
-        return book_metadata
+    #     return book_metadata
     
 
 class PhysicalBookForm(forms.ModelForm):
@@ -67,5 +67,6 @@ class PhysicalBookForm(forms.ModelForm):
             "",
             "library",
             "level",
-            )
+            ),
+            Submit('submit', 'Add to library', css_class="btn btn-primary")
         )

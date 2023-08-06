@@ -11,6 +11,10 @@ from .forms import BookForm, PhysicalBookForm
 
 
 class BookListView(LoginRequiredMixin, ListView):
+    """
+    Allows the user to look at all the physical books
+    that they have associated with there account.
+    """
     model = PhysicalBook
     context_object_name = "book_list"
     template_name = "books/book_list.html"
@@ -22,6 +26,10 @@ class BookListView(LoginRequiredMixin, ListView):
 
 
 class BookDetailView(LoginRequiredMixin, DetailView): #PermissionRequiredMixin,
+    """
+    Displays information about an individual
+    book.
+    """
     model = PhysicalBook
     context_object_name = "book"
     template_name = "books/book_detail.html"
@@ -33,31 +41,61 @@ class BookDetailView(LoginRequiredMixin, DetailView): #PermissionRequiredMixin,
     
 
 class BookCreateView(LoginRequiredMixin, CreateView):
+    """
+    A view that will add Meta Data about a book.
+    Does not create a book that will be kept track of
+    for purposes decided by the user.
+    """
     model = BookMetaData
     form_class = BookForm
     template_name = 'books/add_book.html'
     login_url = "account_login"
     success_url = reverse_lazy("book_list")
 
-    def get_form_kwargs(self):
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
+
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     return super().form_valid(form)
+
+
+class PhysicalBookCreateView(LoginRequiredMixin, CreateView):
+    """
+    Creates an object that is associated with the user
+    and can be added to a library for organizational,
+    inventory or any other purpose useful to the user.
+    """
+    model = PhysicalBook
+    form_class = PhysicalBookForm
+    template_name = "books/add_book_to_library.html"
+    login_url = "account_login"
+    success_url = reverse_lazy("book_list")
+
+    def get_from_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
-
+    
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
 
 class SearchResultsListView(LoginRequiredMixin, ListView):
-    model = BookMetaData
+    """
+    Allows a user to search for a book
+    """
+    model = PhysicalBook
     context_object_name = "book_list"
     template_name = "books/search_results.html"
     login_url = "account_login"
     
     def get_queryset(self):
         query = self.request.GET.get("q")
-        return BookMetaData.objects.filter(
+        return PhysicalBook.objects.filter(
             Q(title__icontains=query) & Q(user=self.request.user) | Q(author__icontains=query) & Q(user=self.request.user)
         )
 
