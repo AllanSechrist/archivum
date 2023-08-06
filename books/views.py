@@ -6,12 +6,12 @@ from django.views.generic.edit import CreateView
 from django.db.models import Q
 from django.urls import reverse_lazy
 
-from .models import Book
-from .forms import BookForm
+from .models import BookMetaData, PhysicalBook
+from .forms import BookForm, PhysicalBookForm
 
 
 class BookListView(LoginRequiredMixin, ListView):
-    model = Book
+    model = PhysicalBook
     context_object_name = "book_list"
     template_name = "books/book_list.html"
     login_url = "account_login"
@@ -22,7 +22,7 @@ class BookListView(LoginRequiredMixin, ListView):
 
 
 class BookDetailView(LoginRequiredMixin, DetailView): #PermissionRequiredMixin,
-    model = Book
+    model = PhysicalBook
     context_object_name = "book"
     template_name = "books/book_detail.html"
     login_url = "account_login"
@@ -33,7 +33,7 @@ class BookDetailView(LoginRequiredMixin, DetailView): #PermissionRequiredMixin,
     
 
 class BookCreateView(LoginRequiredMixin, CreateView):
-    model = Book
+    model = BookMetaData
     form_class = BookForm
     template_name = 'books/add_book.html'
     login_url = "account_login"
@@ -50,14 +50,14 @@ class BookCreateView(LoginRequiredMixin, CreateView):
 
 
 class SearchResultsListView(LoginRequiredMixin, ListView):
-    model = Book
+    model = BookMetaData
     context_object_name = "book_list"
     template_name = "books/search_results.html"
     login_url = "account_login"
     
     def get_queryset(self):
         query = self.request.GET.get("q")
-        return Book.objects.filter(
+        return BookMetaData.objects.filter(
             Q(title__icontains=query) & Q(user=self.request.user) | Q(author__icontains=query) & Q(user=self.request.user)
         )
 

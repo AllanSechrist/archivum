@@ -17,11 +17,11 @@
     
     {% for book in book_list %}
         <tr scope="row">
-            <td><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></td>
-            <td>{{ book.author }}</td>
-            <td>{{ book.publisher }}</td>
-            <td>{{ book.level }}</td>
-            <td>{{ book.library }}</td>
+            <td><a href="{{ book.get_absolute_url }}">{{ book.book.title }}</a></td>
+            <td>{{ book.book.author }}</td>
+            <td>{{ book.book.publisher }}</td>
+            <td>{{ book.book.level }}</td>
+            <td>{{ book.book.library }}</td>
         </tr>
     {% empty %}
         <h2>

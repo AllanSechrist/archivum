@@ -1,3 +1,4 @@
+from typing import Set
 import uuid
 import string
 from django.db import models
@@ -16,19 +17,25 @@ def generate_level_choices():
     return choices
 
 
-class Book(models.Model):
+class BookMetaData(models.Model):
+    """
+    Creates meta data for a book. To be linked to physical books.
+    In the case that a book doesn't have an ISBN number,
+    The user can create a unique "ISBN".
+    It is recommened to use letters or a combinations of
+    letters and numbers inorder to prevent accidently
+    assigning a ISBN that might exsist. 
+    """
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="books", on_delete=models.CASCADE)
+    
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
     publisher = models.CharField(max_length=200)
-    isbn = models.CharField(max_length=15, null=True, blank=True) # if a book does not have an ISBN leave blank.
-    level = models.CharField(max_length=1, null=True, blank=True, choices=generate_level_choices())
-    library = models.ForeignKey("libraries.Library", on_delete=models.SET_NULL, null=True, related_name="books") # set to null when library is deleted.
+    isbn = models.CharField(max_length=15, unique=True) 
 
     # class Meta: # TEST
     #     permissions = [
@@ -40,3 +47,16 @@ class Book(models.Model):
     
     def get_absolute_url(self):
         return reverse("book_detail", args=[str(self.id)])
+    
+    
+class PhysicalBook(models.Model):
+    LEVEL_CHOICES = generate_level_choices()
+    library = models.ForeignKey("libraries.Library", on_delete=models.SET_NULL, null=True, blank=True, related_name="books") # set to null when library is deleted.
+    book = models.ForeignKey(BookMetaData, on_delete=models.CASCADE, related_name="book")
+    level = models.CharField(max_length=1, null=True, blank=True, choices=LEVEL_CHOICES)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="books", on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.book
+    
+    
